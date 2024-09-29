@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Sample Page with jQuery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Sample Page with jQuery 1.13.3</h1>
+
+<br/>
+<br/>
+<h2>Get message (a core jquery feature)</h2>
+<button id="btnGetMessage">Get Message</button>
+<p id="message"></p>
+
+<h2>Select a Date (a jquery UI feature)</h2>
+<input type="text" id="datepicker" class="datepicker-input" />
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#datepicker").datepicker();
+
+            $('#btnGetMessage').click(function () {
+
+                console.log('test triggered')
+                // Perform AJAX request
+                $.ajax({
+                    url: '@Url.Action("GetMessage", "Sample")',
+                    method: 'GET',
+                    success: function (data) {
+                        console.log('succss triggered', data.text)
+                        $('#message').text(data.text);
+                    },
+                    error: function (err) {
+                        console.error('errror trrige', err)
+                        $('#message').text('An error occurred.' + '\n' + err.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
